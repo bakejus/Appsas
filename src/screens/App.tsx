@@ -5,7 +5,8 @@
  * @format
  */
 
-import React, { useEffect, useState } from 'react';
+//import React, { useEffect, useState } from 'react'; //Cia skirta importuot 2 funkcijas
+import React, {} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ScrollView,
@@ -24,7 +25,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { supabase } from '../services/supabase' // Importuojam Supabase
+//import { supabase } from '../services/supabase' // Importuojam Supabase
 
 type SectionProps = PropsWithChildren<{
   title: string;
