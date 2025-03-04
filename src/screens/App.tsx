@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ScrollView,
@@ -23,6 +23,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import { supabase } from '../services/supabase' // Importuojam Supabase
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -61,15 +63,40 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
+    /*// State to hold Supabase data
+    const [data, setData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data, error } = await supabase.from('USER').select('*');
+
+            if (error) {
+                console.error('❌ Error fetching data:', error);
+            } else {
+                console.log('✅ Supabase data:', data);
+                setData(data);
+            }
+            setLoading(false);
+        };
+
+        fetchData();
+    }, []);
+    useEffect(() => {
+        const addTestUser = async () => {
+            const { data, error } = await supabase.from('USER').insert([
+                { username: "JohnDoe", picture_url: "https://example.com/avatar.jpg" }
+            ]);
+
+            if (error) {
+                console.error('❌ Error adding user:', error);
+            } else {
+                console.log('✅ Test user added:', data);
+            }
+        };
+
+        addTestUser();  // Run once to add a user
+    }, []);*/
   const safePadding = '5%';
 
   return (
