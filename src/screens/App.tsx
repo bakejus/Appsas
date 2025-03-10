@@ -8,6 +8,7 @@
 //import React, { useEffect, useState } from 'react'; //Cia skirta importuot 2 funkcijas
 import React, {} from 'react';
 import type {PropsWithChildren} from 'react';
+
 import {
   ScrollView,
   StatusBar,
@@ -57,6 +58,17 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
+type ValueProps = {
+    label: string,
+    value: string,
+    }
+const StatValue = ({label, value}: ValueProps) => (
+        <View style = {styles.valueContainer}>
+            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.value}>{value}</Text>
+        </View>
+    )
+
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -101,7 +113,15 @@ function App(): React.JSX.Element {
   const safePadding = '5%';
 
   return (
-    <View style={backgroundStyle}>
+    <View style={styles.container}>
+
+        <View style={styles.statValue}>
+            <StatValue label = 'steps' value='12345'/>
+            <StatValue label = 'distance' value='10,2 km'/>
+        <StatValue label = 'flights climbed' value='5'/>
+        </View>
+
+    {/*
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
@@ -134,11 +154,13 @@ function App(): React.JSX.Element {
           <LearnMoreLinks />
         </View>
       </ScrollView>
+      */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  /*
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
@@ -155,6 +177,33 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  */
+  container: {
+      flex: 1,
+      backgroundColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 12,
+      fontFamily: 'Cochin',
+      },
+  statValue: {
+      flexDirection: 'row',
+      gap: 20,
+      flexWrap: 'wrap',
+      },
+  label: {
+      color: '#fff',
+      fontSize: 20,
+      },
+  value: {
+      fontSize: 35,
+      color: '#fff',
+      fontWeight: '500',
+      },
+  valueContainer: {
+      marginVertical: 10,
+      minWidth: '40%',
+      }
 });
 
 export default App;
