@@ -34,20 +34,19 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   button: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#0077b6', // Button color
-    borderRadius: 10,
+    width: '100%',          // Full width
+    height: 45,            // Adjust height
+    backgroundColor: '#0095F6',  // Instagram blue
+    borderRadius: 8,        // Less rounded corners
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
-    elevation: 5, // Shadow for Android
+    marginBottom: 15,      // Space before "OR"
+    elevation: 2,          // Shadow on Android
   },
   buttonText: {
-    fontSize: 18,
-    color: '#fff', // Text color on button
-    fontWeight: '600',
-    fontFamily: 'HelveticaNeue-Bold',
+    fontSize: 16,
+    color: '#fff',        // White text
+    fontWeight: 'bold',
   },
   forgotPasswordText: {
     fontSize: 16,
@@ -87,6 +86,19 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 10,
     textAlign: 'center',
+  },
+  signupContainer: {
+    flexDirection: 'row', // Make text and button inline
+    justifyContent: 'center',
+    marginTop: 15,
+  },
+  signupText: {
+    color: '#000', // Normal white text
+    fontSize: 16,
+  },
+  signupLink: {
+    color: '#007AFF', // iOS Blue (or use '#1E90FF' for Android)
+    fontSize: 16,
   },
 });
 
