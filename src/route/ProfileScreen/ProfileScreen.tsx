@@ -60,13 +60,26 @@ const ProfileScreen = ({ navigation }: any) => {
       <Text style={styles.infoText}>Total Steps: {steps}</Text>
       <Text style={styles.infoText}>Calories Burned: {calories}</Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Home')}
-      >
-        <Text style={styles.buttonText}>Go Back</Text>
-      </TouchableOpacity>
+      {/*<TouchableOpacity*/}
+      {/*  style={styles.button}*/}
+      {/*  onPress={() => navigation.navigate('Home')}*/}
+      {/*>*/}
+      {/*  <Text style={styles.buttonText}>Go Back</Text>*/}
+      {/*</TouchableOpacity>*/}
+
+      {/* Button Container */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Home')}
+        >
+          <Text style={styles.buttonText}>Go Back</Text>
+        </TouchableOpacity>
+
+
+      </View>
     </View>
+    // </View>
   );
 };
 
