@@ -60,6 +60,7 @@ const RegisterScreen = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Username"
+        placeholderTextColor={styles.placeholder.color}
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
@@ -69,6 +70,7 @@ const RegisterScreen = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={styles.placeholder.color}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -79,6 +81,7 @@ const RegisterScreen = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={styles.placeholder.color}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -87,6 +90,7 @@ const RegisterScreen = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
+        placeholderTextColor={styles.placeholder.color}
         secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}

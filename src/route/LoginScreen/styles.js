@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...GlobalStyles.title,
-    color: GlobalStyles.colors.secondary,
+    color: GlobalStyles.colors.primary,
     fontSize: 36,
     textAlign: 'center',
     marginTop: height * 0.3,
@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 14,
     color: GlobalStyles.colors.accent,
+  },
+  placeholder: {
+    color: GlobalStyles.colors.primary,
   },
 });
 

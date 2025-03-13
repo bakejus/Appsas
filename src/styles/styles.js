@@ -32,7 +32,7 @@ const GlobalStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'HelveticaNeue',
     backgroundColor: '#fff',
-    color: '#000',
+    color: '#4CAF50',
   },
   button: {
     backgroundColor: '#4CAF50',

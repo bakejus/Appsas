@@ -27,18 +27,18 @@ const ProfileScreen = ({ navigation }: any) => {
 
       const { data: activityData, error: activityError } = await supabase
         .from('ACTIVITY')
-        .select();
-        // .select('distance, step_count, calories_burned')
-        // .eq('userId', user.id);
+        // .select();
+        .select('distance, step_count, calories_burned')
+        .eq('userId', user.id);
 
       console.log('Activity Data:', activityData); //testinu
 
       if (activityError) {
         console.log('Error fetching activity data from ACTIVITY table:', activityError);
       } else if (activityData) {
-        // setDistance(activityData.distance);
-        // setSteps(activityData.step_count);
-        // setCalories(activityData.calories_burned);
+        setDistance(activityData[0].distance);
+        setSteps(activityData[0].step_count);
+        setCalories(activityData[0].calories_burned);
       }
 
       setLoading(false);

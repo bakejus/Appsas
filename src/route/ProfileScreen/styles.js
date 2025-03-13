@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 18,
-    color: '#333',
+    color: GlobalStyles.colors.primary,
     fontWeight: '500',
     marginBottom: 10,
     textAlign: 'center',
