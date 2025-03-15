@@ -4,7 +4,7 @@ import { supabase } from '../../services/supabase';
 import styles from './styles';
 
 const ProfileScreen = ({ navigation }: any) => {
-  const [email, setEmail] = useState<string | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
   const [steps, setSteps] = useState<number | null>(null);
   const [calories, setCalories] = useState<number | null>(null);
@@ -22,23 +22,45 @@ const ProfileScreen = ({ navigation }: any) => {
         return;
       }
 
-      setEmail(user.email || null);
       setUserId(user.id);
 
-      const { data: activityData, error: activityError } = await supabase
+      const { data: data, error: error } = await supabase
         .from('ACTIVITY')
-        // .select();
-        .select('distance, step_count, calories_burned')
+        .select('duration, distance, step_count, calories_burned')
         .eq('userId', user.id);
 
-      console.log('Activity Data:', activityData); //testinu
 
-      if (activityError) {
-        console.log('Error fetching activity data from ACTIVITY table:', activityError);
-      } else if (activityData) {
-        setDistance(activityData[0].distance);
-        setSteps(activityData[0].step_count);
-        setCalories(activityData[0].calories_burned);
+      if (error) {
+        console.log('Error fetching activity data from ACTIVITY table:', error);
+      } else if (data) {
+        setDuration(() => {
+          let sum = 0;
+          for (let i of data) {
+            sum += i.duration;
+          }
+          return sum;
+        });
+        setDistance( () => {
+            let sum = 0;
+            for (let i of data) {
+                sum += i.distance;
+            }
+            return sum;
+        });
+        setSteps( () => {
+            let sum = 0;
+            for (let i of data) {
+                sum += i.step_count;
+            }
+            return sum;
+        });
+        setCalories( () => {
+            let sum = 0;
+            for (let i of data) {
+                sum += i.calories_burned;
+            }
+            return sum;
+        });
       }
 
       setLoading(false);
@@ -54,20 +76,11 @@ const ProfileScreen = ({ navigation }: any) => {
   return (
     <View style={styles.profileContainer}>
       <Text style={styles.title}>My Profile</Text>
-      <Text style={styles.infoText}>Email: {email}</Text>
-
+      <Text style={styles.infoText}>Total Duration: {duration} km</Text>
       <Text style={styles.infoText}>Total Distance: {distance} km</Text>
       <Text style={styles.infoText}>Total Steps: {steps}</Text>
       <Text style={styles.infoText}>Calories Burned: {calories}</Text>
 
-      {/*<TouchableOpacity*/}
-      {/*  style={styles.button}*/}
-      {/*  onPress={() => navigation.navigate('Home')}*/}
-      {/*>*/}
-      {/*  <Text style={styles.buttonText}>Go Back</Text>*/}
-      {/*</TouchableOpacity>*/}
-
-      {/* Button Container */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
             style={styles.button}

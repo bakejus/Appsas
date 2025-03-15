@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const GlobalStyles = StyleSheet.create({
   colors: {
@@ -42,6 +42,15 @@ const GlobalStyles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 20,
   },
   buttonText: {
     color: '#000',

@@ -25,13 +25,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingHorizontal: 20,
+    ...GlobalStyles.buttonContainer,
   },
   button: {
     ...GlobalStyles.button,

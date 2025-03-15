@@ -96,7 +96,7 @@ const LoginScreen = ({ navigation }: any) => {
 
       <View style={styles.loginContainer}>
         <Text style={styles.forgotPassword}>Don't have an account? </Text>
-        <Text style={styles.linkText} onPress={() => navigation.replace('RegistrationScreen')}>
+        <Text style={styles.linkText} onPress={() => navigation.replace('Registration')}>
           Sign Up
         </Text>
       </View>

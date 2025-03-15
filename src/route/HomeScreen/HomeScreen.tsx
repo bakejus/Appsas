@@ -25,6 +25,13 @@ const HomeScreen = ({ navigation }: any) => {
           <Text style={styles.buttonText}>Log Out</Text>
         </TouchableOpacity>
 
+          <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.replace('LeaderBoard')}
+          >
+              <Text style={styles.buttonText}>Leaderboards</Text>
+          </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Profile')}
