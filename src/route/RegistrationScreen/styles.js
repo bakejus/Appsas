@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
   },
   button: {
     ...GlobalStyles.button,
-    backgroundColor: GlobalStyles.colors.secondary,
-    marginTop: 20,
   },
   buttonText: {
     ...GlobalStyles.buttonText,
@@ -35,11 +33,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   signupText: {
-    color: GlobalStyles.colors.text,
+    color: GlobalStyles.colors.accent,
   },
   signupLink: {
     color: GlobalStyles.colors.accent,
     fontWeight: 'bold',
+  },
+  placeholder: {
+    color: GlobalStyles.colors.primary,
   },
 });
 

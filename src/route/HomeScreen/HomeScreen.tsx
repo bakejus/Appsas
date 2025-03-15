@@ -9,7 +9,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   return (
     <View style={styles.homeContainer}>
-      <Text style={styles.title}>pzda ce!</Text>
+      <Text style={styles.title}>Home</Text>
       <View style={styles.statsContainer}>
         <Text style={styles.statText}>Steps Count: {stepsCount}</Text>
         <Text style={styles.statText}>Flights Climbed: {flightsClimbed}</Text>

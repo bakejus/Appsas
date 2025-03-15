@@ -67,6 +67,7 @@ const LoginScreen = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Username (Email)"
+        placeholderTextColor={styles.placeholder.color}
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
@@ -75,6 +76,7 @@ const LoginScreen = ({ navigation }: any) => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={styles.placeholder.color}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -93,7 +95,7 @@ const LoginScreen = ({ navigation }: any) => {
       </TouchableOpacity>
 
       <View style={styles.loginContainer}>
-        <Text style={styles.linkText}>Don't have an account? </Text>
+        <Text style={styles.forgotPassword}>Don't have an account? </Text>
         <Text style={styles.linkText} onPress={() => navigation.replace('RegistrationScreen')}>
           Sign Up
         </Text>
