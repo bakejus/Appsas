@@ -7,6 +7,7 @@ const GlobalStyles = StyleSheet.create({
     background: '#1C1C1E', // Dark Gray/Black background
     accent: '#32FF7E', // Neon Green (Accent)
     white: '#ffffff',
+    mutedGray: '#888888',
   },
   container: {
     flex: 1,

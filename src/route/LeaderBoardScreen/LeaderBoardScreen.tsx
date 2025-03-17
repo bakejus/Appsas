@@ -37,14 +37,30 @@ const LeaderboardScreen = ({ navigation }: any) => {
             return;
         }
 
+        // Sujungiam visa distance kiekvienam user
+        const userDistanceMap: Record<string, number> = {};
+
+        data.forEach((record) => {
+            if (userDistanceMap[record.userId]) {
+                userDistanceMap[record.userId] += record.distance;
+            } else {
+                userDistanceMap[record.userId] = record.distance;
+            }
+        });
+
+        // Convert the map to an array of objects
+        let combinedData = Object.entries(userDistanceMap).map(([userId, totalDistance]) => ({
+            userId,
+            totalDistance,
+        }));
 
         // For each record, query the USER table to get the username.
         const updatedData = await Promise.all(
-            data.map(async (record) => {
+            combinedData.map(async (record) => {
                 const { data: userData, error: userError } = await supabase
                     .from('USER')
                     .select('username')
-                    .eq('id', record.userId)
+                    .eq('username', record.userId)
                     .single();
 
                 if (userError) {
@@ -54,6 +70,8 @@ const LeaderboardScreen = ({ navigation }: any) => {
                 return { ...record, username: userData.username };
             })
         );
+
+        updatedData.sort((a, b) => b.totalDistance - a.totalDistance);
 
         setLeaderboardData(updatedData || []);
         setLoading(false);
@@ -67,7 +85,7 @@ const LeaderboardScreen = ({ navigation }: any) => {
         <View style={styles.leaderboardItem}>
             <Text style={styles.leaderboardRank}>{index + 1}.</Text>
             <Text style={styles.leaderboardUsername}>{item.username || 'Unknown'}</Text>
-            <Text style={styles.leaderboardScore}>{item.distance}</Text>
+            <Text style={styles.leaderboardScore}>{item.totalDistance.toFixed(1)} km</Text>
         </View>
     );
 
@@ -101,6 +119,13 @@ const LeaderboardScreen = ({ navigation }: any) => {
                     data={leaderboardData}
                     keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
                     renderItem={renderItem}
+                    ListHeaderComponent={() => (
+                        <View style={styles.leaderboardItem}>
+                            <Text style={styles.leaderboardRankHeader}>Rank</Text>
+                            <Text style={styles.leaderboardUsernameHeader}>Username</Text>
+                            <Text style={styles.leaderboardScoreHeader}>Distance</Text>
+                        </View>
+                    )}
                 />
             )}
 

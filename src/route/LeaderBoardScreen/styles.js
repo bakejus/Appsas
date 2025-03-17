@@ -38,25 +38,49 @@ const styles = StyleSheet.create({
     leaderboardItem: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         paddingVertical: 12,
         borderBottomWidth: 1,
         borderBottomColor: GlobalStyles.colors.border,
+        width: '100%',
     },
     leaderboardRank: {
-        width: 30,
+        width: 40,
         textAlign: 'center',
         fontWeight: 'bold',
         color: GlobalStyles.colors.primary,
     },
-    leaderboardUsername: {
-        flex: 1,
-        fontSize: 16,
+    leaderboardRankHeader: {
+        fontSize: 20,
+        textAlign: 'left',
+        fontWeight: 'bold',
         color: GlobalStyles.colors.primary,
     },
-    leaderboardScore: {
-        width: 50,
-        textAlign: 'right',
+    leaderboardUsername: {
         fontSize: 16,
+        color: GlobalStyles.colors.primary,
+        textAlign: 'left',
+        paddingHorizontal: 10,
+        paddingRight: 45,
+    },
+    leaderboardUsernameHeader: {
+        fontSize: 20,
+        textAlign: 'left',
+        fontWeight: 'bold',
+        color: GlobalStyles.colors.primary,
+        paddingRight: 45,
+    },
+    leaderboardScore: {
+        width: 90,
+        textAlign: 'left',
+        fontSize: 16,
+        color: GlobalStyles.colors.primary,
+
+    },
+    leaderboardScoreHeader: {
+        width: 90,
+        fontSize: 20,
+        textAlign: 'left',
         fontWeight: 'bold',
         color: GlobalStyles.colors.primary,
     },

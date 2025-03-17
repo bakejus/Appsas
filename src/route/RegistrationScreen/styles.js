@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.secondary,
     marginBottom: 15,
     paddingHorizontal: 10,
+    fontWeight: 'bold',
   },
   button: {
     ...GlobalStyles.button,
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   placeholder: {
-    color: GlobalStyles.colors.primary,
+    color: GlobalStyles.colors.mutedGray,
   },
 });
 

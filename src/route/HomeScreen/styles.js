@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
   title: {
     ...GlobalStyles.title,
     color: GlobalStyles.colors.primary,
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
   },
   statsContainer: {
     width: '100%',

@@ -8,7 +8,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const [distance, setDistance] = useState<number | null>(null);
   const [steps, setSteps] = useState<number | null>(null);
   const [calories, setCalories] = useState<number | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,12 +22,24 @@ const ProfileScreen = ({ navigation }: any) => {
         return;
       }
 
-      setUserId(user.id);
+      const { data: userData, error: userDataError } = await supabase
+          .from('USER')
+          .select('username')
+          .eq('email', user.email)
+          .single();
+
+      if (userDataError || !userData) {
+          console.log('Error fetching user data:', userDataError);
+          setLoading(false);
+          return;
+      }
+
+      setUsername(userData.username);
 
       const { data: data, error: error } = await supabase
         .from('ACTIVITY')
         .select('duration, distance, step_count, calories_burned')
-        .eq('userId', user.id);
+        .eq('userId', userData.username);
 
 
       if (error) {
@@ -67,7 +79,7 @@ const ProfileScreen = ({ navigation }: any) => {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, []);
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0077b6" />;
@@ -79,7 +91,7 @@ const ProfileScreen = ({ navigation }: any) => {
       <Text style={styles.infoText}>Total Duration: {duration} km</Text>
       <Text style={styles.infoText}>Total Distance: {distance} km</Text>
       <Text style={styles.infoText}>Total Steps: {steps}</Text>
-      <Text style={styles.infoText}>Calories Burned: {calories}</Text>
+      <Text style={styles.infoText}>Calories Burned: {calories} kcal</Text>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -92,7 +104,6 @@ const ProfileScreen = ({ navigation }: any) => {
 
       </View>
     </View>
-    // </View>
   );
 };
 

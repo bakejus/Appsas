@@ -7,9 +7,11 @@ const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
     setLoading(true);
+    setErrorMessage('');
 
     try {
       let emailUsername = username;
@@ -22,7 +24,7 @@ const LoginScreen = ({ navigation }: any) => {
           .single();
         console.log({ data, error });
         if (error || !data) {
-          Alert.alert('Invalid credentials');
+          setErrorMessage('Invalid credentials');
           setLoading(false);
           return;
         }
@@ -36,13 +38,14 @@ const LoginScreen = ({ navigation }: any) => {
       });
 
       if (authError) {
-        Alert.alert('Invalid credentials');
+        setErrorMessage('Invalid credentials');
       } else {
         console.log('Login successful', authData);
         navigation.replace('Home');
       }
     } catch (error) {
       console.error('Error logging in:', error);
+        setErrorMessage('Something went wrong');
     }
 
     setLoading(false);
@@ -81,6 +84,7 @@ const LoginScreen = ({ navigation }: any) => {
         value={password}
         onChangeText={setPassword}
       />
+      {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
       <TouchableOpacity
         style={styles.button}
         onPress={handleLogin}

@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.secondary,
     marginBottom: 15,
     paddingHorizontal: 10,
+    fontWeight: 'bold',
   },
   button: {
     ...GlobalStyles.button,
@@ -46,7 +47,14 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.accent,
   },
   placeholder: {
-    color: GlobalStyles.colors.primary,
+    color: GlobalStyles.colors.mutedGray,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 5,
+    fontWeight: 'bold',
   },
 });
 
