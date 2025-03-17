@@ -56,6 +56,23 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: 'bold',
   },
+  rememberUserContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  checkbox: {
+    alignSelf: 'center',
+    width: 18,
+    height: 18,
+    borderRadius: 3,
+    marginRight: 8,
+  },
+  rememberUserText: {
+    color: GlobalStyles.colors.primary,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 });
 
 

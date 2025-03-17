@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, Alert, TouchableOpacity } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
 
@@ -8,6 +10,33 @@ const LoginScreen = ({ navigation }: any) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [rememberUser, setRememberUser] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const rememberMe = await AsyncStorage.getItem('rememberUser');
+        const storedSession = await AsyncStorage.getItem('session');
+
+        if (rememberMe === 'true' && storedSession) {
+          const parsedSession = JSON.parse(storedSession);
+
+          const { data, error } = await supabase.auth.setSession(parsedSession);
+
+          if (error) {
+            console.log('Error restoring session:', error);
+          } else if (data.session) {
+            console.log('User session restored:', data.session.user);
+            navigation.replace('Home');
+          }
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+      }
+    };
+
+    checkSession();
+  }, [navigation]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -41,6 +70,11 @@ const LoginScreen = ({ navigation }: any) => {
         setErrorMessage('Invalid credentials');
       } else {
         console.log('Login successful', authData);
+
+        if (rememberUser) {
+          await AsyncStorage.setItem('rememberUser', 'true');
+          await AsyncStorage.setItem('session', JSON.stringify(authData.session));
+        }
         navigation.replace('Home');
       }
     } catch (error) {
@@ -94,6 +128,18 @@ const LoginScreen = ({ navigation }: any) => {
           {loading ? 'Logging in...' : 'Log in'}
         </Text>
       </TouchableOpacity>
+      <View style={styles.rememberUserContainer}>
+          <CheckBox
+              value={rememberUser}
+              onValueChange={setRememberUser}
+              boxType="square"
+              style={styles.checkbox}
+              onCheckColor="#4CAF50"  // Checkmark color (iOS)
+              onTintColor="#4CAF50"   // Checkbox background when checked (iOS)
+              tintColor="#888888"
+          />
+          <Text style={styles.rememberUserText}>Remember me</Text>
+      </View>
       <TouchableOpacity onPress={handleResetPassword}>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>

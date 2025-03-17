@@ -64,6 +64,12 @@ const GlobalStyles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginTop: 10,
   },
+  splashContainer: {
+    flex: 1,
+    backgroundColor: '#1C1C1E', // Dark background
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default GlobalStyles;

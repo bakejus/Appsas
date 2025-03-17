@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
 
@@ -80,10 +80,6 @@ const ProfileScreen = ({ navigation }: any) => {
 
     fetchUserData();
   }, []);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0077b6" />;
-  }
 
   return (
     <View style={styles.profileContainer}>

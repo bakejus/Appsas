@@ -1,11 +1,25 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase } from '../../services/supabase';
 import styles from './styles';
 
 const HomeScreen = ({ navigation }: any) => {
   const stepsCount = 1253;
   const flightsClimbed = 5;
   const caloriesBurned = 450;
+
+  const handleLogout = async () => {
+      try {
+          await supabase.auth.signOut();
+          await AsyncStorage.removeItem('rememberUser');
+          await AsyncStorage.removeItem('userSession');
+
+          navigation.replace('Login');
+      } catch (error) {
+            console.log('Error logging out:', error);
+      }
+  };
 
   return (
     <View style={styles.homeContainer}>
@@ -20,14 +34,14 @@ const HomeScreen = ({ navigation }: any) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.replace('Login')}
+          onPress={handleLogout}
         >
           <Text style={styles.buttonText}>Log Out</Text>
         </TouchableOpacity>
 
           <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.replace('LeaderBoard')}
+              onPress={() => navigation.navigate('LeaderBoard')}
           >
               <Text style={styles.buttonText}>Leaderboards</Text>
           </TouchableOpacity>
