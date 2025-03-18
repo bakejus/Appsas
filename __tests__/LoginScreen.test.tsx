@@ -2,6 +2,13 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import LoginScreen from '../src/route/LoginScreen/LoginScreen';
 import { supabase } from '../src/services/supabase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(() => Promise.resolve(null)), // Mock empty storage
+  setItem: jest.fn(() => Promise.resolve()),
+  removeItem: jest.fn(() => Promise.resolve()),
+}));
 
 // Jest Mock Setup
 jest.mock('../src/services/supabase', () => ({
@@ -38,7 +45,7 @@ describe('LoginScreen Tests', () => {
     fireEvent.changeText(emailInput, 'test@example.com');
     fireEvent.changeText(passwordInput, 'password123');
 
-    // Fix: Ensure mockResolvedValue is used correctly
+
     (supabase.auth.signInWithPassword as jest.Mock).mockResolvedValueOnce({
       data: { user: { id: '123' } },
       error: null,
