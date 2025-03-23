@@ -7,9 +7,9 @@ const HomeScreen = ({ navigation }: any) => {
   const [date, setDate] = useState(new Date());
   const { steps, flights, distance } = healthData(date);
 
-  const stepsCount = 1253;
-  const flightsClimbed = 5;
-  const caloriesBurned = 450;
+  //const stepsCount = 1253;
+  //const flightsClimbed = 5;
+  //const caloriesBurned = 450;
 
   return (
     <View style={styles.homeContainer}>
