@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.secondary,
     marginBottom: 15,
     paddingHorizontal: 10,
+    fontWeight: 'bold',
   },
   button: {
     ...GlobalStyles.button,
@@ -46,7 +47,31 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.accent,
   },
   placeholder: {
+    color: GlobalStyles.colors.mutedGray,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 5,
+    fontWeight: 'bold',
+  },
+  rememberUserContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  checkbox: {
+    alignSelf: 'center',
+    width: 18,
+    height: 18,
+    borderRadius: 3,
+    marginRight: 8,
+  },
+  rememberUserText: {
     color: GlobalStyles.colors.primary,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
