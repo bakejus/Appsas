@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const GlobalStyles = StyleSheet.create({
   colors: {
@@ -7,6 +7,7 @@ const GlobalStyles = StyleSheet.create({
     background: '#1C1C1E', // Dark Gray/Black background
     accent: '#32FF7E', // Neon Green (Accent)
     white: '#ffffff',
+    mutedGray: '#888888',
   },
   container: {
     flex: 1,
@@ -43,6 +44,15 @@ const GlobalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 20,
+  },
   buttonText: {
     color: '#000',
     fontSize: 14,  // Smaller font size for smaller button
@@ -53,6 +63,12 @@ const GlobalStyles = StyleSheet.create({
     color: '#007AFF',
     textDecorationLine: 'underline',
     marginTop: 10,
+  },
+  splashContainer: {
+    flex: 1,
+    backgroundColor: '#1C1C1E', // Dark background
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

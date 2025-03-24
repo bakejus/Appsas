@@ -4,11 +4,11 @@ import { supabase } from '../../services/supabase';
 import styles from './styles';
 
 const RegisterScreen = ({ navigation }: any) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const debugSupabase = async () => {
@@ -139,66 +139,66 @@ const RegisterScreen = ({ navigation }: any) => {
         setLoading(false);
     };
 
-  return (
-    <View style={styles.registrationContainer}>
-      <Text style={styles.title}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        placeholderTextColor={styles.placeholder.color}
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize="none"
-        autoCorrect={false}
-        textContentType="oneTimeCode"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor={styles.placeholder.color}
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-        textContentType="oneTimeCode"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor={styles.placeholder.color}
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        textContentType="oneTimeCode"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        placeholderTextColor={styles.placeholder.color}
-        secureTextEntry
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        textContentType="oneTimeCode"
-      />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleRegister}
-        disabled={loading}
-      >
-        <Text style={styles.buttonText}>
-          {loading ? 'Registering...' : 'Sign Up'}
-        </Text>
-      </TouchableOpacity>
+    return (
+        <View style={styles.registrationContainer}>
+            <Text style={styles.title}>Sign Up</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Username"
+                placeholderTextColor={styles.placeholder.color}
+                value={username}
+                onChangeText={setUsername}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="oneTimeCode"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor={styles.placeholder.color}
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="oneTimeCode"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor={styles.placeholder.color}
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+                textContentType="oneTimeCode"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Confirm Password"
+                placeholderTextColor={styles.placeholder.color}
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                textContentType="oneTimeCode"
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={handleRegister}
+                disabled={loading}
+            >
+                <Text style={styles.buttonText}>
+                    {loading ? 'Registering...' : 'Sign Up'}
+                </Text>
+            </TouchableOpacity>
 
-      <View style={styles.signupContainer}>
-        <Text style={styles.signupText}>Already have an account? </Text>
-        <Text style={styles.signupLink} onPress={() => navigation.replace('Login')}>
-          Log in
-        </Text>
-      </View>
-    </View>
-  );
+            <View style={styles.signupContainer}>
+                <Text style={styles.signupText}>Already have an account? </Text>
+                <Text style={styles.signupLink} onPress={() => navigation.replace('Login')}>
+                    Log in
+                </Text>
+            </View>
+        </View>
+    );
 };
 
 export default RegisterScreen;
