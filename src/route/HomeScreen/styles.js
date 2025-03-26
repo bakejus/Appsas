@@ -34,10 +34,12 @@ const styles = StyleSheet.create({
   },
   button: {
     ...GlobalStyles.button,
-    minWidth: 100,
+    minWidth: 50,
+    maxWidth: '25%',
   },
   buttonText: {
     ...GlobalStyles.buttonText,
+    fontSize: 7,
   },
 });
 

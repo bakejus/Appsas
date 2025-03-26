@@ -46,12 +46,12 @@ const GlobalStyles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 0,
     left: 0,
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   buttonText: {
     color: '#000',
