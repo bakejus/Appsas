@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
+import NavBar from '../NavBar'
 
 const LeaderboardScreen = ({ navigation }: any) => {
     const [selectedTab, setSelectedTab] = useState('all');
@@ -129,14 +130,7 @@ const LeaderboardScreen = ({ navigation }: any) => {
                 />
             )}
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.replace('Home')}
-                >
-                    <Text style={styles.buttonText}>Back to Home</Text>
-                </TouchableOpacity>
-            </View>
+            <NavBar navigation={navigation}/>
         </View>
     );
 };

@@ -5,6 +5,7 @@ import { supabase } from '../../services/supabase';
 import styles from './styles';
 import { Pedometer } from 'expo-sensors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import NavBar from '../NavBar'
 
 const HomeScreen = ({ navigation }) => {
     const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
@@ -103,24 +104,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.statText}>Calories Burned: {caloriesBurned.toFixed(2)} cal</Text>
             </View>
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                    <Icon name="logout" size={30} color="#000" />
-                    <Text style={styles.buttonText}>Log out</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LeaderBoard')}>
-                    <Icon name="account-multiple" size={30} color="#000" />
-                    <Text style={styles.buttonText}>Leaderboard</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
-                    <Icon name="account" size={30} color="#000" />
-                    <Text style={styles.buttonText}>Account</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activity')}>
-                    <Icon name="arm-flex" size={30} color="#000" />
-                    <Text style={styles.buttonText}>Record</Text>
-                </TouchableOpacity>
-            </View>
+            <NavBar navigation={navigation}/>
         </View>
     );
 };

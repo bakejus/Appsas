@@ -36,7 +36,7 @@ const GlobalStyles = StyleSheet.create({
     color: '#4CAF50',
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#6A0DAD',
     paddingVertical: 8,  // Smaller vertical padding
     paddingHorizontal: 20,  // Smaller horizontal padding
     borderRadius: 5,
@@ -51,10 +51,14 @@ const GlobalStyles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingHorizontal: 10,
+    //paddingHorizontal: 20,
+    backgroundColor: '#1C1C1E', // Dark background to match the overall theme
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#444', // Light border to separate navbar from the content
   },
   buttonText: {
-    color: '#000',
+    color: '#4CAF50',
     fontSize: 14,  // Smaller font size for smaller button
     fontWeight: 'bold',
   },
@@ -69,6 +73,32 @@ const GlobalStyles = StyleSheet.create({
     backgroundColor: '#1C1C1E', // Dark background
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  navBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    //paddingHorizontal: 20,
+    backgroundColor: '#1C1C1E', // Dark background to match the overall theme
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#444', // Light border to separate navbar from the content
+  },
+  navBarButton: {
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 50,
+    maxWidth: '25%',
+  },
+  navBarButtonText: {
+    color: '#4CAF50',
+    fontSize: 14,  // Smaller font size for smaller button
+    fontWeight: 'bold',
+    fontSize: 7,
   },
 });
 
