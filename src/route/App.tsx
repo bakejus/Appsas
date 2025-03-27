@@ -8,6 +8,7 @@ import ProfileScreen from './ProfileScreen/ProfileScreen';
 import RegistrationScreen from './RegistrationScreen/RegistrationScreen';
 import LeaderBoardScreen from './LeaderBoardScreen/LeaderBoardScreen';
 import SplashScreen from 'react-native-splash-screen';
+import ActivityScreen from './ActivityScreen/ActivityScreen';
 import styles from '../styles/styles';
 
 const Stack = createStackNavigator();
@@ -53,6 +54,10 @@ const App = () => {
               name="LeaderBoard"
               component={LeaderBoardScreen}
               options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Activity"
+            component={ActivityScreen}
+            options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

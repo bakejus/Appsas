@@ -29,6 +29,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
   },
+navBar: {
+      ...GlobalStyles.navBar,
+  },
+  navBarButton: {
+      ...GlobalStyles.navBarButton,
+
+  },
+  navBarButtonText: {
+      ...GlobalStyles.navBarButtonText,
+  },
   buttonContainer: {
     ...GlobalStyles.buttonContainer,
   },

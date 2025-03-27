@@ -18,26 +18,46 @@ const styles = StyleSheet.create({
   statsContainer: {
     width: '100%',
     padding: 20,
-    backgroundColor: GlobalStyles.colors.primary,
+    //backgroundColor: GlobalStyles.colors.primary,
+    borderColor: GlobalStyles.colors.primary,
+    borderWidth: 5,
     borderRadius: 10,
     marginBottom: 20,
+    // iOS shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
+
+        // Android shadow
+        elevation: 5,  // Elevation adds shadow on Android
   },
   statText: {
     fontSize: 18,
-    color: GlobalStyles.colors.black,
+    color: GlobalStyles.colors.primary,
     fontWeight: '500',
     marginBottom: 10,
     textAlign: 'center',
+  },
+  navBar: {
+      ...GlobalStyles.navBar,
+  },
+  navBarButton: {
+      ...GlobalStyles.navBarButton,
+
+  },
+  navBarButtonText: {
+      ...GlobalStyles.navBarButtonText,
   },
   buttonContainer: {
     ...GlobalStyles.buttonContainer,
   },
   button: {
-    ...GlobalStyles.button,
-    minWidth: 100,
+
   },
   buttonText: {
     ...GlobalStyles.buttonText,
+    fontSize: 7,
   },
 });
 

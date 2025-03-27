@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
   },
   button: {
     ...GlobalStyles.button,
+    backgroundColor: GlobalStyles.colors.secondary,
+    paddingVertical: 8,  // Smaller vertical padding
+    paddingHorizontal: 20,  // Smaller horizontal padding
+    borderRadius: 5,
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
 
   },
   buttonText: {
