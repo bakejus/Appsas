@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, Alert, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, Alert, ImageBackground, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../../services/supabase';
@@ -18,6 +18,15 @@ const LoginScreen = ({ navigation }: any) => {
         const rememberMe = await AsyncStorage.getItem('rememberUser');
         const storedSession = await AsyncStorage.getItem('session');
 
+        if (storedSession) {
+          try {
+            const parsedSession = JSON.parse(storedSession);
+            const { data, error } = await supabase.auth.setSession(parsedSession);
+            if (error) console.log('Error restoring session:', error);
+          } catch (parseError) {
+            console.error('Error parsing session data:', parseError);
+          }
+        }
         if (rememberMe === 'true' && storedSession) {
           const parsedSession = JSON.parse(storedSession);
 
@@ -99,7 +108,13 @@ const LoginScreen = ({ navigation }: any) => {
   };
 
   return (
+    <View style={{width:"100%", height:"100%"}}>
+    <ImageBackground resizeMode="cover"
+                     source={require('../../assets/3835.jpg')}
+                     style={styles.background}
+                              >
     <View style={styles.loginContainer}>
+
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
@@ -129,13 +144,13 @@ const LoginScreen = ({ navigation }: any) => {
         </Text>
       </TouchableOpacity>
       <View style={styles.rememberUserContainer}>
+
           <CheckBox
               value={rememberUser}
               onValueChange={setRememberUser}
-              boxType="square"
               style={styles.checkbox}
-              onCheckColor="#4CAF50"  // Checkmark color (iOS)
-              onTintColor="#4CAF50"   // Checkbox background when checked (iOS)
+              onCheckColor="#feb83d"  // Checkmark color (iOS)
+              onTintColor="#feb83d"   // Checkbox background when checked (iOS)
               tintColor="#888888"
           />
           <Text style={styles.rememberUserText}>Remember me</Text>
@@ -150,6 +165,8 @@ const LoginScreen = ({ navigation }: any) => {
           Sign Up
         </Text>
       </View>
+    </View>
+    </ImageBackground>
     </View>
   );
 };

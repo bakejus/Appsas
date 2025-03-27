@@ -5,14 +5,15 @@ const styles = StyleSheet.create({
   profileContainer: {
     ...GlobalStyles.container,
     backgroundColor: GlobalStyles.colors.background,
+    padding: 10,
   },
   title: {
     ...GlobalStyles.title,
     color: GlobalStyles.colors.primary,
-    position: 'absolute',
-    top: 60,
+    top: 0,
     left: 0,
     right: 0,
+    bottom: 10,
     textAlign: 'center',
   },
   infoContainer: {
@@ -23,11 +24,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   infoText: {
-    fontSize: 18,
-    color: GlobalStyles.colors.primary,
+    fontSize: 25,
+    color: 'black',
     fontWeight: '500',
     marginBottom: 10,
     textAlign: 'center',
+    fontWeight: "bold",
   },
   buttonContainer: {
     ...GlobalStyles.buttonContainer,
@@ -42,6 +44,26 @@ const styles = StyleSheet.create({
   linkText: {
     ...GlobalStyles.linkText,
     marginTop: 10,
+  },
+  container:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  square1: {
+    width: "50%", // Two squares per row
+    aspectRatio: 1, // Makes it a square
+    borderTopWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  square2: {
+      width: "50%", // Two squares per row
+      borderTopWidth: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 20,
+      padding: 20,
   },
 });
 

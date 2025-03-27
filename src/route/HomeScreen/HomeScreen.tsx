@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
@@ -97,15 +97,38 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.homeContainer}>
-            <Text style={styles.title}>Home</Text>
-            <View style={styles.statsContainer}>
-                <Text style={styles.statText}>Steps Count: {stepsCount}</Text>
-                <Text style={styles.statText}>Distance: {distance.toFixed(2)} km</Text>
-                <Text style={styles.statText}>Calories Burned: {caloriesBurned.toFixed(2)} cal</Text>
-            </View>
-
+            <ScrollView>
+                <View style={styles.topBar}>
+                    <Text style={styles.appName}>StepZen</Text>
+                    <TouchableOpacity style={styles.navBarButton} >
+                        <Icon name="magnify" size={30} style={styles.icon} />
+                        <Text style={styles.navBarButtonText}>Home</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{padding: 20}}>
+                <Text style={styles.title}>Home</Text>
+                <View style={styles.statsContainer}>
+                    <Text style={styles.statText}>Steps Count: {stepsCount}</Text>
+                    <Text style={styles.statText}>Distance: {distance.toFixed(2)} km</Text>
+                    <Text style={styles.statText}>Calories Burned: {caloriesBurned.toFixed(2)} cal</Text>
+                </View>
+                <View style={styles.statsContainer}>
+                        <Text style={styles.statText}>POST</Text>
+                        <Text style={styles.statText}>pooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooost</Text>
+                </View>
+                <View style={styles.statsContainer}>
+                        <Text style={styles.statText}>POST</Text>
+                        <Text style={styles.statText}>pooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooost</Text>
+                </View>
+                <View style={styles.statsContainer}>
+                        <Text style={styles.statText}>POST</Text>
+                        <Text style={styles.statText}>pooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooost</Text>
+                </View>
+                </View>
+            </ScrollView>
             <NavBar navigation={navigation}/>
         </View>
+
     );
 };
 

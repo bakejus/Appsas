@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         width: 40,
         textAlign: 'center',
         fontWeight: 'bold',
-        color: GlobalStyles.colors.primary,
+        //color: GlobalStyles.colors.primary,
     },
     leaderboardRankHeader: {
         fontSize: 20,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     },
     leaderboardUsername: {
         fontSize: 16,
-        color: GlobalStyles.colors.primary,
+        //color: GlobalStyles.colors.primary,
         textAlign: 'left',
         paddingHorizontal: 10,
         paddingRight: 45,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         width: 90,
         textAlign: 'left',
         fontSize: 16,
-        color: GlobalStyles.colors.primary,
+        //color: GlobalStyles.colors.primary,
 
     },
     leaderboardScoreHeader: {

@@ -26,7 +26,7 @@ const App = () => {
     if (isLoading) {
         return (
             <View style={styles.splashContainer}>
-                <ActivityIndicator size="large" color="#4CAF50" />
+                <ActivityIndicator size="large" color="#feb83d" />
             </View>
         );
     }

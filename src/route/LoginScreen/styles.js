@@ -6,13 +6,13 @@ const { height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   loginContainer: {
     ...GlobalStyles.container,
-    backgroundColor: GlobalStyles.colors.background,
     justifyContent: 'center',
-    padding: 20,
+    width: '100%',
+    height: '100%',
   },
   title: {
     ...GlobalStyles.title,
-    color: GlobalStyles.colors.primary,
+    color: 'black',
     fontSize: 36,
     textAlign: 'center',
     marginTop: height * 0.3,
@@ -28,14 +28,6 @@ const styles = StyleSheet.create({
   },
   button: {
     ...GlobalStyles.button,
-    backgroundColor: GlobalStyles.colors.secondary,
-    paddingVertical: 8,  // Smaller vertical padding
-    paddingHorizontal: 20,  // Smaller horizontal padding
-    borderRadius: 5,
-    marginVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-
   },
   buttonText: {
     ...GlobalStyles.buttonText,
@@ -48,7 +40,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   forgotPassword: {
-    alignSelf: 'flex-end',
     marginTop: 10,
     fontSize: 14,
     color: GlobalStyles.colors.accent,
@@ -80,6 +71,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%', // Ensure full height coverage
+    justifyContent: 'center',
+    alignItems: 'center', // Center content inside the background
+  }
 });
 
 

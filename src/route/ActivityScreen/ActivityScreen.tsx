@@ -68,15 +68,43 @@ const ActivityScreen = ({ navigation }) => {
       return newSteps;
     });
   };
+  const formatDuration = (totalSeconds) => {
+    const seconds = Math.floor(totalSeconds); // Ensure it's always an integer
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  };
 
   return (
     <View style={styles.profileContainer}>
-      <Text style={styles.title}>Let's go!</Text>
-      <Text style={styles.infoText}>Duration: {duration} sec</Text>
-      <Text style={styles.infoText}>Distance: {distance.toFixed(2)} km</Text>
-      <Text style={styles.infoText}>Average speed: {speed.toFixed(2)} min/km</Text>
-      <Text style={styles.infoText}>Steps: {steps}</Text>
-      <Text style={styles.infoText}>Calories Burned: {calories.toFixed(2)} cal</Text>
+      <Text style={styles.title}>LETS' GO!</Text>
+
+      <View style={styles.container}>
+          <View style={styles.square1}>
+            <Text style={styles.infoText}>DURATION</Text>
+            <Text style={styles.infoText}>{formatDuration(duration)} min</Text>
+          </View>
+          <View style={styles.square1}>
+            <Text style={styles.infoText}>DISTANCE</Text>
+            <Text style={styles.infoText}>{distance.toFixed(2)} km</Text>
+          </View>
+      </View>
+      <View style={styles.container}>
+          <View style={styles.square1}>
+            <Text style={styles.infoText}>AVG SPEED</Text>
+            <Text style={styles.infoText}>{formatDuration(speed*60)} min/km</Text>
+          </View>
+          <View style={styles.square1}>
+            <Text style={styles.infoText}>CALS BURNED</Text>
+            <Text style={styles.infoText}>{calories.toFixed(2)} cal</Text>
+          </View>
+      </View>
+      <View style={styles.container}>
+          <View style={styles.square2}>
+            <Text style={styles.infoText}>STEPS</Text>
+            <Text style={styles.infoText}>{steps}</Text>
+          </View>
+      </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleAddSteps}>

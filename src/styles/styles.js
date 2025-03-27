@@ -2,10 +2,10 @@ import {StyleSheet} from 'react-native';
 
 const GlobalStyles = StyleSheet.create({
   colors: {
-    primary: '#4CAF50', // Hulk Green
-    secondary: '#6A0DAD', // Deep Purple
-    background: '#1C1C1E', // Dark Gray/Black background
-    accent: '#32FF7E', // Neon Green (Accent)
+    primary: '#feb83d', // Primary
+    secondary: '#fefcf0', // Secondary
+    background: '#fdfaf5', //  background
+    accent: '#61707D', // Accent
     white: '#ffffff',
     mutedGray: '#888888',
   },
@@ -33,10 +33,9 @@ const GlobalStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'HelveticaNeue',
     backgroundColor: '#fff',
-    color: '#4CAF50',
   },
   button: {
-    backgroundColor: '#6A0DAD',
+    backgroundColor: "#feb83d",
     paddingVertical: 8,  // Smaller vertical padding
     paddingHorizontal: 20,  // Smaller horizontal padding
     borderRadius: 5,
@@ -52,13 +51,11 @@ const GlobalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     //paddingHorizontal: 20,
-    backgroundColor: '#1C1C1E', // Dark background to match the overall theme
+    backgroundColor: '#ffdc9f', // Dark background to match the overall theme
     paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#444', // Light border to separate navbar from the content
   },
   buttonText: {
-    color: '#4CAF50',
+    color: 'white',
     fontSize: 14,  // Smaller font size for smaller button
     fontWeight: 'bold',
   },
@@ -70,7 +67,7 @@ const GlobalStyles = StyleSheet.create({
   },
   splashContainer: {
     flex: 1,
-    backgroundColor: '#1C1C1E', // Dark background
+    backgroundColor: '#fdfaf5', // Dark background
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -82,10 +79,10 @@ const GlobalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     //paddingHorizontal: 20,
-    backgroundColor: '#1C1C1E', // Dark background to match the overall theme
+    backgroundColor: '#feb83d',
     paddingVertical: 10,
     borderTopWidth: 1,
-    borderTopColor: '#444', // Light border to separate navbar from the content
+    borderTopColor: '#ffdc9f', // Light border to separate navbar from the content
   },
   navBarButton: {
     borderRadius: 5,
@@ -95,10 +92,14 @@ const GlobalStyles = StyleSheet.create({
     maxWidth: '25%',
   },
   navBarButtonText: {
-    color: '#4CAF50',
+    color: '#ffffff',
     fontSize: 14,  // Smaller font size for smaller button
     fontWeight: 'bold',
     fontSize: 7,
+  },
+
+  icon: {
+  color: "#ffffff",
   },
 });
 
