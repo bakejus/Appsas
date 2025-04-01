@@ -28,11 +28,13 @@ class Activity {
         throw new Error( "Steps should not decrease");
     }
     this.steps = steps;
+    this.calculateDistance();
+    this.calculateCaloriesBurnt();
+    this.calculateAvgSpeed();
   }
 
   calculateCaloriesBurnt() {
-    let distanceInKm = this.distance / 1000; // In km
-    this.caloriesBurnt = this.person.weight * distanceInKm * 570;
+    this.caloriesBurnt = this.person.weight * this.distance; //1 calorie per kilogram per kilometer
   }
   updateTime(time)
   {
