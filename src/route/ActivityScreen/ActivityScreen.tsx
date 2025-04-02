@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Alert } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase } from '../../services/supabase';
 import styles from './styles';
 import Activity from '../../classes/Activity';
 import Person from '../../classes/Person';
@@ -57,17 +58,65 @@ const ActivityScreen = ({ navigation }) => {
       if (stepSubscription) stepSubscription.remove();
       clearInterval(interval);
     };
-  }, []); // Empty dependency array ensures this effect only runs once on component mount
+  }, []);
 
-  // ➕ Function to manually add 100 steps
-  const handleAddSteps = () => {
-    setSteps(prevSteps => {
-      const newSteps = prevSteps + 100;
-      activity.updateSteps(newSteps);
-      AsyncStorage.setItem('stepsCount', newSteps.toString());
-      return newSteps;
-    });
+  const handleSaveActivity = () => {
+    Alert.alert(
+          "Confirmation",
+          "Do you wish to proceed?",
+          [
+            { text: "Cancel", style: "cancel" },
+            { text: "OK", onPress: () => saveActivityToSupabase() }
+          ]
+        );
   };
+  const saveActivityToSupabase = async () => {
+    console.log('Saving...');
+
+    try {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        console.error('Error fetching authenticated user:', userError);
+        return;
+      }
+
+      // ✅ Fetch the username from the USER table
+      const { data: userData, error: userDataError } = await supabase
+        .from('USER')
+        .select('username')
+        .eq('email', user.email)  // Assuming email is used to identify the user
+        .single();
+
+      if (userDataError || !userData) {
+        console.error('Error fetching username:', userDataError);
+        return;
+      }
+
+      // ✅ Use the fetched username for userId
+      const activityData = {
+        date: new Date().toISOString(),
+        duration,
+        step_count: steps,
+        distance,
+        calories_burned: calories.toFixed(0),
+        userId: userData.username,  // Use the fetched username instead of user.id
+      };
+
+      const { error } = await supabase.from('ACTIVITY').insert([activityData]);
+
+      if (error) {
+        console.error('Error inserting activity:', error);
+      } else {
+        console.log('Activity saved successfully!');
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.error('Error saving activity to Supabase:', error);
+    }
+  };
+
+
   const formatDuration = (totalSeconds) => {
     const seconds = Math.floor(totalSeconds); // Ensure it's always an integer
     const minutes = Math.floor(seconds / 60);
@@ -107,8 +156,8 @@ const ActivityScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddSteps}>
-          <Text style={styles.buttonText}>Add 100 steps</Text>
+        <TouchableOpacity style={styles.button} onPress={handleSaveActivity}>
+          <Text style={styles.buttonText}>Finish</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
