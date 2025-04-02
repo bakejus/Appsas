@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.primary,
     left: 0,
     right: 0,
+    top: 20,
+    padding: 20,
     textAlign: 'center',
   },
   infoContainer: {
@@ -43,6 +45,8 @@ navBar: {
   },
   button: {
     ...GlobalStyles.button,
+    width: '30%',
+    margin: 'auto',
   },
   buttonText: {
     ...GlobalStyles.buttonText,
@@ -75,6 +79,21 @@ navBar: {
       marginBottom: 10,
       textAlign: 'center',
     },
+  activityItem: {
+    backgroundColor: '#e6e6e6',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  activityText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  scroller: {
+  padding: 10,
+  margin: 0,
+  width: "100%",
+  },
 });
 
 export default styles;
