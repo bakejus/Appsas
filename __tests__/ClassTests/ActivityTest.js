@@ -74,5 +74,26 @@ describe("Activity Class", () => {
       activity.updateSteps(2000);
       expect(activity.steps).toBe(2000);
     });
+
+    test('should set avgSpeed to 0 when distance is 0', () => {
+      activity.distance = 0;
+      activity.timeElapsed = 10;
+      activity.calculateAvgSpeed();
+      expect(activity.avgSpeed).toBe(0);
+    });
+
+    test('should correctly calculate average speed', () => {
+      activity.distance = 2;
+      activity.timeElapsed = 30; 
+      activity.calculateAvgSpeed();
+      expect(activity.avgSpeed).toBeCloseTo(0.25); 
+    });
+
+    test('should update time correctly', () => {
+      activity.updateTime(15);
+      expect(activity.timeElapsed).toBe(15);
+      activity.updateTime(10);
+      expect(activity.timeElapsed).toBe(25);
+    });
   });
 

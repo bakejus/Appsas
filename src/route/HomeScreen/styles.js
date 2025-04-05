@@ -71,11 +71,28 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: 'black',
     },
-  appName:{
-  color: GlobalStyles.colors.primary,
-  fontSize: 25,
-  fontWeight: 'bold',
-  },
 });
+export const alertNotificationColors = [
+  { //light mode
+    success: {
+      border: 'red',
+      background: '#fff5f5',
+      icon: 'red',
+      title: 'red',
+      message: 'black',
+      primary: 'red',
+    },
+  },
+  {//dark mode
+    success: {
+      border: '#660000',
+      background: '#2c2c2c',
+      icon: '#ff6666',
+      title: '#ff6666',
+      message: 'white',
+      primary: '#ff4444',
+    },
+  },
+];
 
 export default styles;

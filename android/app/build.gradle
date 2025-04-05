@@ -105,12 +105,16 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.11" // to support Kotlin 1.9.25
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation "androidx.health.connect:connect-client:1.0.0-beta01"
+    implementation("androidx.health.connect:connect-client:1.1.0-beta01")
+    //implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

@@ -5,13 +5,20 @@ import { supabase } from '../../services/supabase';
 import styles from './styles';
 import { Pedometer } from 'expo-sensors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import NavBar from '../NavBar'
+import NavBar from '../NavBar';
+import Alert, { ALERT_TYPE, Toast, AlertNotificationRoot } from 'react-native-alert-notification';
+import { StepNotifications } from './StepNotifications';
 
 const HomeScreen = ({ navigation }) => {
     const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
     const [stepsCount, setStepsCount] = useState(0);
     const [distance, setDistance] = useState(0);
     const [caloriesBurned, setCaloriesBurned] = useState(0);
+
+    const dailyWantedSteps = 10000; // should get user number from database
+    const [notified, setNotified] = useState(false);
+
+    StepNotifications(stepsCount, dailyWantedSteps, notified, setNotified);
 
     useEffect(() => {
         let subscription;
@@ -97,6 +104,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.homeContainer}>
+            <AlertNotificationRoot>
             <ScrollView>
                 <View style={styles.topBar}>
                     <Text style={styles.appName}>StepZen</Text>
@@ -108,9 +116,9 @@ const HomeScreen = ({ navigation }) => {
                 <View style={{padding: 20}}>
                 <Text style={styles.title}>Home</Text>
                 <View style={styles.statsContainer}>
-                    <Text style={styles.statText}>Steps Count: {stepsCount}</Text>
-                    <Text style={styles.statText}>Distance: {distance.toFixed(2)} km</Text>
-                    <Text style={styles.statText}>Calories Burned: {caloriesBurned.toFixed(2)} cal</Text>
+                    <Text testID="steps-count" style={styles.statText}>Steps Count: {stepsCount}</Text>
+                    <Text testID="distance" style={styles.statText}>Distance: {distance.toFixed(2)} km</Text>
+                    <Text testID="calories" style={styles.statText}>Calories Burned: {caloriesBurned.toFixed(2)} cal</Text>
                 </View>
                 <View style={styles.statsContainer}>
                         <Text style={styles.statText}>POST</Text>
@@ -126,6 +134,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
                 </View>
             </ScrollView>
+            </AlertNotificationRoot>
             <NavBar navigation={navigation}/>
         </View>
 
