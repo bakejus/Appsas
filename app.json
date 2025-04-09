@@ -1,4 +1,27 @@
 {
   "name": "Appsas",
-  "displayName": "StepHero"
+  "displayName": "Appsas",
+  "plugins": [
+    "react-native-health-connect",
+    "./androidManifestPlugin.js",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0",
+            "minSdkVersion": 26
+          }
+        }
+      ]
+  ],
+  "expo": {
+    "name": "Appsas",
+    "slug": "Appsas",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
 }
