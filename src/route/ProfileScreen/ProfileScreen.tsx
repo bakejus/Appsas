@@ -84,42 +84,16 @@ const ProfileScreen = ({ navigation }: any) => {
   };
   return (
     <View style={styles.profileContainer}>
-      <FlatList
-        data={activities}
-        style={styles.scroller}
-        keyExtractor={(item) => item.id.toString()} // Ensure 'id' is unique
-        renderItem={({ item }) => (
-          <View style={styles.activityItem}>
-            <Text style={styles.activityText}>
-              📅 {new Date(item.date).toLocaleDateString()} - ⏱ {item.duration} sec
-            </Text>
-            <Text style={styles.activityText}>
-              🚶‍♂️ {item.step_count} steps | 🏃 {item.distance.toFixed(2)} km | 🔥 {item.calories_burned.toFixed(2)} kcal
-            </Text>
-          </View>
-        )}
-        ListHeaderComponent={
-          <>
-            <Text style={styles.title}>My Profile</Text>
-            <Text style={styles.infoText}>Total Duration: {duration} km</Text>
-            <Text style={styles.infoText}>Total Distance: {distance} km</Text>
-            <Text style={styles.infoText}>Total Steps: {steps}</Text>
-            <Text style={styles.infoText}>Calories Burned: {calories} kcal</Text>
-
-            <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={handleLogout}>
-              <Text style={styles.buttonText}>Log out</Text>
-            </TouchableOpacity>
-            </View>
-            <View style={styles.container}>
-              <Text style={styles.title}>Past Activities</Text>
-              {loading && <Text>Loading...</Text>}
-              {activities.length === 0 && !loading && <Text>No past activities found.</Text>}
-            </View>
-          </>
-        }
-        contentContainerStyle={{ paddingBottom: 100 }} // Avoids cutting off last item
-      />
+    <Text style={styles.title}>My Profile</Text>
+    <Text style={styles.infoText}>Total Duration: {duration} km</Text>
+    <Text style={styles.infoText}>Total Distance: {distance} km</Text>
+    <Text style={styles.infoText}>Total Steps: {steps}</Text>
+    <Text style={styles.infoText}>Calories Burned: {calories} kcal</Text>
+    <View style={styles.container}>
+    <TouchableOpacity style={styles.button} onPress={handleLogout}>
+      <Text style={styles.buttonText}>Log out</Text>
+    </TouchableOpacity>
+    </View>
       <NavBar navigation={navigation} />
     </View>
 

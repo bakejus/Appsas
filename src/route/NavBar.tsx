@@ -22,9 +22,9 @@ const NavBar = ({ navigation }) => {
                 <Icon name="account" size={20} style={styles.icon} />
                 <Text style={styles.navBarButtonText}>Account</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.navBarButton} onPress={() => navigation.navigate('Activity')}>
+            <TouchableOpacity style={styles.navBarButton} onPress={() => navigation.navigate('ViewActivities')}>
                 <Icon name="arm-flex" size={20} style={styles.icon} />
-                <Text style={styles.navBarButtonText}>Record</Text>
+                <Text style={styles.navBarButtonText}>Activities</Text>
             </TouchableOpacity>
         </View>
     );
