@@ -5,6 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './LoginScreen/LoginScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
+import Settings from './ProfileScreen/SettingsScreen';
+import Friends from './ProfileScreen/FriendsScreen';
 import RegistrationScreen from './RegistrationScreen/RegistrationScreen';
 import LeaderBoardScreen from './LeaderBoardScreen/LeaderBoardScreen';
 import SplashScreen from 'react-native-splash-screen';
@@ -62,6 +64,14 @@ const App = () => {
         <Stack.Screen
             name="ViewActivities"
             component={ViewActivities}
+            options={{ headerShown: false }} />
+        <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{ headerShown: false }} />
+        <Stack.Screen
+            name="Friends"
+            component={Friends}
             options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>

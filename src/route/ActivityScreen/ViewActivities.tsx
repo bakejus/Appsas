@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, FlatList, Modal, TextInput  } from 'react-native';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,6 +14,12 @@ const ViewActivities = ({ navigation }: any) => {
   const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [activities, setActivities] = useState([]);
+  //posting states
+  const [isPosting, setIsPosting] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
+  const [postTitle, setPostTitle] = useState('Activity Share');
+  const [postDescription, setPostDescription] = useState('Check out my activity!');
 
 
   useEffect(() => {
@@ -71,17 +77,47 @@ const ViewActivities = ({ navigation }: any) => {
     setLoading(false);
   };
 
+  const handlePostPress = (activityId) => {
+    setSelectedActivityId(activityId);
+    setPostTitle('Activity Share');
+    setPostDescription('Check out my activity!');
+    setModalVisible(true);
+};
 
-  const handleLogout = async () => {
-      try {
-          await supabase.auth.signOut();
-          await AsyncStorage.removeItem('rememberUser');
-          await AsyncStorage.removeItem('userSession');
-          navigation.replace('Login');
-      } catch (error) {
-          console.log('Error logging out:', error);
-      }
-  };
+const uploadPost = async () => {
+    if (!username || isPosting || !selectedActivityId) return;
+    
+    setIsPosting(true);
+    try {
+        const { data: post, error: postError } = await supabase
+            .from('POST')
+            .insert([{
+                user: username,
+                title: postTitle,
+                description: postDescription,
+                visibility: 3,
+                activity: selectedActivityId,
+                created_at: new Date().toISOString()
+            }])
+            .select()
+            .single();
+
+        if (postError) {
+            console.error('Error creating post:', postError);
+            alert('Failed to create post');
+            return;
+        }
+
+        alert('Activity posted successfully!');
+        setModalVisible(false);
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong');
+    } finally {
+        setIsPosting(false);
+    }
+};
   return (
     <View style={styles.profileContainer}>
       <FlatList
@@ -96,13 +132,16 @@ const ViewActivities = ({ navigation }: any) => {
             <Text style={styles.activityText}>
               🚶‍♂️ {item.step_count} steps | 🏃 {item.distance.toFixed(2)} km | 🔥 {item.calories_burned.toFixed(2)} kcal
             </Text>
-            <TouchableOpacity style={styles.postButton} onPress={() => navigation.navigate('Activity')}>
-              <Icon
-                  name={'share'}
-                  size={20}
-                  style={{color: 'white'}}
-              />
-              <Text style={styles.postButtonText}>Post</Text>
+            <TouchableOpacity 
+                style={[styles.postButton]}
+                onPress={() => handlePostPress(item.id)}
+            >
+                <Icon
+                    name="share"
+                    size={20}
+                    style={{color: 'white'}}
+                />
+                <Text style={styles.postButtonText}>Post</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -114,16 +153,63 @@ const ViewActivities = ({ navigation }: any) => {
               <Text style={styles.buttonText}>Start recording!</Text>
             </TouchableOpacity>
             </View>
-            <View style={styles.container}>
               <Text style={styles.title}>Past Activities</Text>
               {loading && <Text>Loading...</Text>}
               {activities.length === 0 && !loading && <Text>No past activities found.</Text>}
-            </View>
           </>
         }
         contentContainerStyle={{ paddingBottom: 100 }} // Avoids cutting off last item
       />
       <NavBar navigation={navigation} />
+      <Modal
+    animationType="slide"
+    transparent={true}
+    visible={modalVisible}
+    onRequestClose={() => setModalVisible(false)}
+>
+    <View style={styles.modalOverlay}>
+        <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Create Post</Text>
+            
+            <TextInput
+                style={styles.input}
+                value={postTitle}
+                onChangeText={setPostTitle}
+                placeholder="Enter post title"
+                placeholderTextColor="#666"
+            />
+            
+            <TextInput
+                style={[styles.input, styles.textArea]}
+                value={postDescription}
+                onChangeText={setPostDescription}
+                placeholder="Enter post description"
+                placeholderTextColor="#666"
+                multiline
+                numberOfLines={4}
+            />
+
+            <View style={styles.modalButtons}>
+                <TouchableOpacity 
+                    style={[styles.modalButton, styles.cancelButton]}
+                    onPress={() => setModalVisible(false)}
+                >
+                    <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                    style={[styles.modalButton, styles.postButton]}
+                    onPress={uploadPost}
+                    disabled={isPosting}
+                >
+                    <Text style={styles.buttonText}>
+                        {isPosting ? 'Posting...' : 'Post'}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    </View>
+</Modal>
     </View>
 
 

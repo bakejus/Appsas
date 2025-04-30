@@ -1,0 +1,106 @@
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { supabase } from '../../services/supabase';
+import styles from './styles';
+
+const FriendsScreen = ({ route, navigation }: any) => {
+  const { username } = route.params;
+  const [friends, setFriends] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
+
+  const fetchFriends = async () => {
+    setLoading(true);
+    console.log(`Fetching friends for user: ${username}`);
+
+    // Step 1: Fetch accepted friendships where this user is user1
+    const { data: sent, error: sentError } = await supabase
+      .from('FRIEND')
+      .select('*')
+      .eq('status', 'accepted')
+      .eq('user1', username);
+
+    console.log('Sent friends (user1):', sent);
+    if (sentError) console.error('Error fetching sent friendships:', sentError);
+
+    // Step 2: Fetch accepted friendships where this user is user2
+    const { data: received, error: recvError } = await supabase
+      .from('FRIEND')
+      .select('*')
+      .eq('status', 'accepted')
+      .eq('user2', username);
+
+    console.log('Received friends (user2):', received);
+    if (recvError) console.error('Error fetching received friendships:', recvError);
+
+    const allFriends = [...(sent || []), ...(received || [])];
+    console.log('Combined friend rows:', allFriends);
+
+    // Step 3: Extract friend usernames
+    const friendUsernames = allFriends.map(f =>
+      f.user1 === username ? f.user2 : f.user1
+    );
+    console.log('Resolved friend usernames:', friendUsernames);
+
+    if (friendUsernames.length === 0) {
+      console.log('No friends found.');
+      setFriends([]);
+      setLoading(false);
+      return;
+    }
+
+    // Step 4: Fetch user info for friend usernames
+    const { data: users, error: userError } = await supabase
+      .from('USER')
+      .select('username, name, picture_url')
+      .in('username', friendUsernames);
+
+    console.log('Fetched user profiles:', users);
+    if (userError) console.error('Error fetching friend user data:', userError);
+
+    setFriends(users || []);
+    setLoading(false);
+  };
+
+
+  const renderFriend = ({ item }: any) => (
+    <TouchableOpacity
+      style={styles.friendCard}
+      onPress={() => navigation.navigate('Profile', { username: item.username })}
+    >
+      <Image
+        source={{ uri: item.picture_url || 'https://fastly.picsum.photos/id/295/100/100.jpg?hmac=94ML4pZHH5noxaWO7PZQRVND7lKEGB7yzirdjMxqEvI' }}
+        style={styles.friendAvatar}
+      />
+      <Text style={styles.friendName}>{item.name || item.username}</Text>
+    </TouchableOpacity>
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.profileContainer}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.profileContainer}>
+      <Text style={styles.title}>Friends</Text>
+      {friends.length === 0 ? (
+        <Text style={{ textAlign: 'center' }}>No accepted friends yet.</Text>
+      ) : (
+        <FlatList
+          data={friends}
+          renderItem={renderFriend}
+          keyExtractor={(item) => item.username}
+        />
+      )}
+    </View>
+  );
+};
+
+export default FriendsScreen;

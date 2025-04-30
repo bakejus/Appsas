@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
@@ -24,7 +24,33 @@ const HomeScreen = ({ navigation }) => {
 
     StepNotifications(stepsCount, dailyWantedSteps, notified, setNotified);
 
-    // Pedometer functionality
+    
+
+    const calculateCalories = (steps) => {
+        const caloriesPerStep = 0.04;
+        setCaloriesBurned(steps * caloriesPerStep);
+    };
+
+    const getStepsSinceMidnight = async () => {
+        try {
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            const result = await Pedometer.getStepCountAsync(startOfDay, now);
+            if (result && result.steps !== undefined) {
+                setStepsCount(result.steps);
+                await AsyncStorage.setItem('stepsCount', result.steps.toString());
+                calculateCalories(result.steps);
+                setDistance(result.steps * 170 * 0.414 / 100000);
+            } else {
+                console.log('No step count data available');
+            }
+        } catch (error) {
+            console.log('Error fetching step count:', error);
+        }
+    };
+
+    // Main data fetching - combined user and posts
     useEffect(() => {
         let subscription;
         let isMounted = true;
@@ -73,42 +99,6 @@ const HomeScreen = ({ navigation }) => {
 
         loadSteps();
 
-        return () => {
-            isMounted = false;
-            if (subscription) {
-                subscription.remove();
-            }
-        };
-    }, []);
-
-    const calculateCalories = (steps) => {
-        const caloriesPerStep = 0.04;
-        setCaloriesBurned(steps * caloriesPerStep);
-    };
-
-    const getStepsSinceMidnight = async () => {
-        try {
-            const now = new Date();
-            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-            const result = await Pedometer.getStepCountAsync(startOfDay, now);
-            if (result && result.steps !== undefined) {
-                setStepsCount(result.steps);
-                await AsyncStorage.setItem('stepsCount', result.steps.toString());
-                calculateCalories(result.steps);
-                setDistance(result.steps * 170 * 0.414 / 100000);
-            } else {
-                console.log('No step count data available');
-            }
-        } catch (error) {
-            console.log('Error fetching step count:', error);
-        }
-    };
-
-    // Main data fetching - combined user and posts
-    useEffect(() => {
-        let isMounted = true;
-
         const fetchData = async () => {
             try {
                 // Get the authenticated user
@@ -146,19 +136,21 @@ const HomeScreen = ({ navigation }) => {
                     const { data: publicPosts, error: publicError } = await supabase
                         .from('POST')
                         .select(`
-                            *,
-                            ACTIVITY (
-                                duration,
-                                step_count,
-                                distance,
-                                calories_burned,
-                                date
-                            )
-                        `)
-                        .eq('visibility', 3); // Public posts
+                               *,
+                               ACTIVITY (
+                                   duration,
+                                   step_count,
+                                   distance,
+                                   calories_burned,
+                                   date
+                               ),
+                                USER (
+                                    picture_url
+                                )
+                           `)
+                        .eq('visibility', 3);
 
                     console.log('Public posts:', publicPosts?.length || 0, publicError);
-
                     // Get own posts
                     const { data: ownPosts, error: ownPostsError } = await supabase
                         .from('POST')
@@ -170,7 +162,10 @@ const HomeScreen = ({ navigation }) => {
                                    distance,
                                    calories_burned,
                                    date
-                               )
+                               ),
+                                USER (
+                                    picture_url
+                                )
                            `)
                         .eq('user', userUsername);
 
@@ -196,8 +191,20 @@ const HomeScreen = ({ navigation }) => {
 
                         if (friendUsernames.length > 0) {
                             const { data: friendPostsData } = await supabase
-                                .from('POST')
-                                .select('*')
+                            .from('POST')
+                            .select(`
+                                   *,
+                                   ACTIVITY (
+                                       duration,
+                                       step_count,
+                                       distance,
+                                       calories_burned,
+                                       date
+                                   ),
+                                    USER (
+                                        picture_url
+                                    )
+                               `)
                                 .eq('visibility', 2)
                                 .in('user', friendUsernames);
 
@@ -224,27 +231,7 @@ const HomeScreen = ({ navigation }) => {
 
                     console.log('Final posts count (deduped):', uniquePosts.length);
                     // Fetch likes for all post IDs
-                    const postIds = uniquePosts.map(post => post.id);
-
-                    const { data: likesData, error: likesError } = await supabase
-                        .from('LIKE')
-                        .select('post')  // Assuming each row has { post: id, user: username }
-                        .in('post', postIds);
-
-                    if (likesError) {
-                        console.log('Error fetching likes:', likesError);
-                    } else {
-                        // Count likes per post ID
-                        const likeCounts = {};
-                        likesData.forEach(like => {
-                            likeCounts[like.post] = (likeCounts[like.post] || 0);
-                        });
-
-                        // Attach like counts to each post
-                        uniquePosts.forEach(post => {
-                            post.likes = likeCounts[post.id] || 0;
-                        });
-                    }
+                    await fetchLikes(userUsername);
 
                     setPosts(uniquePosts);
                 }
@@ -257,95 +244,48 @@ const HomeScreen = ({ navigation }) => {
 
         return () => {
             isMounted = false;
-        };
-    }, []);
-    // Fetch posts and check for likes on load
-        useEffect(() => {
-            const fetchPosts = async () => {
-                // Fetch posts and likes data
-                const { data: postsData, error: postsError } = await supabase
-                    .from('POST')
-                    .select(`
-                        *,
-                        ACTIVITY (
-                            duration,
-                            step_count,
-                            distance,
-                            calories_burned,
-                            date
-                        )
-                    `)
-                    .eq('visibility', 3); // Public posts
-
-                if (postsError) {
-                    console.log('Error fetching posts:', postsError);
-                    return;
-                }
-
-                // Fetch liked posts for the user
-                const { data: likesData, error: likesError } = await supabase
-                    .from('LIKE')
-                    .select('post')
-                    .eq('user', username);
-
-                if (likesError) {
-                    console.log('Error fetching likes:', likesError);
-                    return;
-                }
-
-                const likedPostIds = new Set(likesData.map(like => like.post));
-                setLikedPosts(likedPostIds);
-
-                setPosts(postsData);
-            };
-
-            fetchPosts();
-        }, [username]);
-
-        // Handle like/unlike toggle
-        const toggleLike = async (postId) => {
-            if (!username) return; // Ensure the user is logged in
-
-            try {
-                // Check if the post is already liked
-                if (likedPosts.has(postId)) {
-                    // Unlike the post: Delete the like
-                    await supabase
-                        .from('LIKE')
-                        .delete()
-                        .eq('post', postId)
-                        .eq('user', username);
-
-                    setLikedPosts(prev => {
-                        const updated = new Set(prev);
-                        updated.delete(postId); // Remove the like
-                        return updated;
-                    });
-                } else {
-                    // Like the post: Insert a like
-                    await supabase
-                        .from('LIKE')
-                        .insert([{ post: postId, user: username }]);
-
-                    setLikedPosts(prev => {
-                        const updated = new Set(prev);
-                        updated.add(postId); // Add the like
-                        return updated;
-                    });
-                }
-            } catch (error) {
-                console.error('Error toggling like:', error);
+            if (subscription) {
+                subscription.remove();
             }
         };
+    }, []);
+    const fetchLikes = async (currentUsername) => {
+        if (!currentUsername) return;
+        
+        const { data: likesData, error: likesError } = await supabase
+            .from('LIKE')
+            .select('post')
+            .eq('user', currentUsername);
+    
+        if (likesError) {
+            console.log('Error fetching likes:', likesError);
+            return;
+        }
+    
+        const likedPostIds = new Set(likesData.map(like => like.post));
+        setLikedPosts(likedPostIds);
+    };
+    const toggleLike = async (postId) => {
+        if (!username) return; // Ensure the user is logged in
 
-    const handleLogout = async () => {
         try {
-            await supabase.auth.signOut();
-            await AsyncStorage.removeItem('rememberUser');
-            await AsyncStorage.removeItem('userSession');
-            navigation.replace('Login');
+            // Check if the post is already liked
+            if (likedPosts.has(postId)) {
+                // Unlike the post: Delete the like
+                await supabase
+                    .from('LIKE')
+                    .delete()
+                    .eq('post', postId)
+                    .eq('user', username);
+            } else {
+                await supabase
+                    .from('LIKE')
+                    .insert([{ post: postId, user: username }]);
+            }
+            // Fetch updated likes immediately after toggle
+            await fetchLikes(username);
         } catch (error) {
-            console.log('Error logging out:', error);
+            console.error('Error toggling like:', error);
         }
     };
 
@@ -386,18 +326,19 @@ const HomeScreen = ({ navigation }) => {
                     renderItem={({ item: post }) => (
                         <View style={styles.postContainer}>
                             <Text style={styles.postTitle}>{post.title || 'Untitled'}</Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('Profile', { username: post.user })}>
+                                <Image source={{ uri: post.USER?.picture_url }} style={{width: 20, height: 20, borderRadius: 50}} />
                                 <Text style={styles.postUser}>@{post.user}</Text>
+                                <Text style={styles.postUser}>{post.ACTIVITY?.date || 'No date'}</Text>
                             </TouchableOpacity>
-                            <Text style={styles.postUser}>{post.ACTIVITY?.date || 'No date'}</Text>
                             <Text style={styles.postDescription}>{post.description || 'No description'}</Text>
 
                             {/* Activity Data */}
                             <View style={styles.activityContainer}>
-                                <Text style={styles.activityText}>⏱ {post.ACTIVITY?.duration || 'N/A'} mins</Text>
-                                <Text style={styles.activityText}>🚶‍♂️ {post.ACTIVITY?.step_count || 'N/A'} steps</Text>
-                                <Text style={styles.activityText}>📏 {post.ACTIVITY?.distance.toFixed(2) || 'N/A'} km</Text>
-                                <Text style={styles.activityText}>🔥 {post.ACTIVITY?.calories_burned || 'N/A'} cal</Text>
+                                <Text style={styles.activityText}>⏱ {post.ACTIVITY?.duration || '0'} mins</Text>
+                                <Text style={styles.activityText}>🚶‍♂️ {post.ACTIVITY?.step_count || '0'} steps</Text>
+                                <Text style={styles.activityText}>📏 {post.ACTIVITY?.distance.toFixed(2) || '0'} km</Text>
+                                <Text style={styles.activityText}>🔥 {post.ACTIVITY?.calories_burned || '0'} cal</Text>
                             </View>
 
                             {/* Like button */}

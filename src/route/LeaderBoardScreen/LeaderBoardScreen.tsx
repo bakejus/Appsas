@@ -37,11 +37,11 @@ const LeaderboardScreen = ({ navigation }: any) => {
             setLoading(false);
             return;
         }
-
+        const rawData = JSON.parse(JSON.stringify(data)); // deep clone to avoid frozen objects
         // Sujungiam visa distance kiekvienam user
         const userDistanceMap: Record<string, number> = {};
 
-        data.forEach((record) => {
+        rawData.forEach((record) => {
             if (userDistanceMap[record.userId]) {
                 userDistanceMap[record.userId] += record.distance;
             } else {

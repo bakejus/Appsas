@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 6,
         elevation: 3,
+        marginBottom: 20,
       },
       postTitle: {
         fontSize: 20,
@@ -99,6 +100,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#777',
         marginBottom: 8,
+        marginLeft: 10,
       },
       postDescription: {
         fontSize: 16,
