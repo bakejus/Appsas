@@ -25,6 +25,13 @@ const ProfileScreen = ({ route, navigation }: any) => {
       setLoading(true);
 
       const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+            setProfileUsername("User not found");
+            setLoading(false);
+            return;
+          }
+
       const currentUsername = await getCurrentUsername(user?.email);
       const targetUsername = route.params?.username || currentUsername;
 
@@ -331,21 +338,55 @@ const ProfileScreen = ({ route, navigation }: any) => {
   // Handle button text change
   const FriendButton = () => {
     const [buttonText, setButtonText] = useState('Add Friend');
+    const [disabled, setDisabled] = useState(false);
 
-    const changeButtonText = () => {
-        if (buttonText === 'Add Friend') {
-            setButtonText('Invite sent');
-        } else {
-            setButtonText('Add Friend');
+    useEffect(() => {
+      const checkFriendshipStatus = async () => {
+        if (!viewerUsername || !profileUsername) return;
+
+        const { data: existing, error } = await supabase
+          .from('FRIEND')
+          .select('*')
+          .or(`and(user1.eq.${viewerUsername},user2.eq.${profileUsername}),and(user1.eq.${profileUsername},user2.eq.${viewerUsername})`)
+          .maybeSingle();
+
+        if (existing) {
+          if (existing.status === 'pending') {
+            setButtonText('Request Sent');
+            setDisabled(true);
+          } else if (existing.status === 'accepted') {
+            setButtonText('Already Friends');
+            setDisabled(true);
+          }
         }
+      };
+
+      checkFriendshipStatus();
+    }, [viewerUsername, profileUsername]);
+
+    const sendFriendRequest = async () => {
+      if (!viewerUsername || !profileUsername) return;
+
+      const { error: insertError } = await supabase
+        .from('FRIEND')
+        .insert([
+          { user1: viewerUsername, user2: profileUsername, status: 'pending' }
+        ]);
+
+      if (!insertError) {
+        setButtonText('Request Sent');
+        setDisabled(true);
+      } else {
+        console.error('Error sending friend request:', insertError);
+      }
     };
 
     return (
-        <TouchableOpacity onPress={changeButtonText}>
-            <Text style={{color:'white', fontWeight: 'bold'}}>{buttonText}</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={sendFriendRequest} disabled={disabled}>
+        <Text style={styles.buttonText}>{buttonText}</Text>
+      </TouchableOpacity>
     );
-};
+  };
   return (
     <View style={styles.profileContainer}>
         <FlatList
@@ -382,23 +423,27 @@ const ProfileScreen = ({ route, navigation }: any) => {
               <Text style={styles.statValue}>{stats.steps.toFixed(0)}</Text>
             </View>
           </View>
+
+
+          {isOwnProfile ? (
+            <View style={[styles.statsContainer, { padding: 0 }]}>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Friends', { username: profileUsername })}>
             <Text style={styles.buttonText}>View Friends</Text>
           </TouchableOpacity>
-
-          {isOwnProfile ? (
-            <>
               <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
                 <Text style={styles.buttonText}>Settings</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.button, { backgroundColor: '#f44336' }]} onPress={handleLogout}>
                 <Text style={styles.buttonText}>Log out</Text>
               </TouchableOpacity>
-            </>
+            </View>
           ) : (
-            <TouchableOpacity style={styles.button}>
-                <FriendButton/>
-              </TouchableOpacity>
+            <View style={[styles.statsContainer, { padding: 0 }]}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Friends', { username: profileUsername })}>
+            <Text style={styles.buttonText}>View Friends</Text>
+          </TouchableOpacity>
+            <FriendButton />
+            </View>
           )}
             {loading && <Text style={styles.statText}>Loading posts...</Text>}
             </>
@@ -437,7 +482,7 @@ const ProfileScreen = ({ route, navigation }: any) => {
             />
       <NavBar navigation={navigation} />
     </View>
-  );
+   );
 };
 
 export default ProfileScreen;

@@ -131,6 +131,20 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#333',
       },
+      searchContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#eee',
+          borderRadius: 8,
+          paddingHorizontal: 10,
+          flex: 1,
+          marginLeft: 30,
+        },
+      searchInput: {
+          flex: 1,
+          paddingVertical: 5,
+          paddingHorizontal: 10,
+        },
 
 });
 export const alertNotificationColors = [

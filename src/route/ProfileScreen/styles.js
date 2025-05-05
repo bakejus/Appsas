@@ -49,6 +49,8 @@ navBar: {
   },
   buttonText: {
     ...GlobalStyles.buttonText,
+    whiteSpace: 'nowrap',
+    fontSize: 11,
   },
   linkText: {
     ...GlobalStyles.linkText,
@@ -61,11 +63,10 @@ navBar: {
       borderColor: GlobalStyles.colors.primary,
       borderWidth: 5,
       borderRadius: 20,
-      marginBottom: 20,
       flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        marginVertical: 20,
+        marginVertical: 10,
     },
     statCard: {
       flex: 1,

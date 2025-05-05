@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Image, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
@@ -18,6 +18,7 @@ const HomeScreen = ({ navigation }) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [likedPosts, setLikedPosts] = useState(new Set()); // Store liked post IDs for efficient checking
+    const [searchText, setSearchText] = useState('');
 
     const dailyWantedSteps = 10000;
     const [notified, setNotified] = useState(false);
@@ -301,9 +302,17 @@ const HomeScreen = ({ navigation }) => {
                         <>
                             <View style={styles.topBar}>
                                 <Text style={styles.appName}>StepZen</Text>
-                                <TouchableOpacity style={styles.navBarButton}>
-                                    <Icon name="magnify" size={30}/>
-                                </TouchableOpacity>
+                                <View style={styles.searchContainer}>
+                                    <TextInput
+                                      style={styles.searchInput}
+                                      placeholder="Search..."
+                                      value={searchText}
+                                      onChangeText={setSearchText}
+                                      onSubmitEditing={() => navigation.navigate('Profile', { username: searchText })}
+                                      returnKeyType="search"
+                                    />
+                                    <Icon name="magnify" size={25} onPress={() => navigation.navigate('Profile', { username: searchText })} />
+                                </View>
                             </View>
                             <View style={{ padding: 0 }}>
                                 <Text style={styles.title}>Home</Text>
@@ -311,6 +320,7 @@ const HomeScreen = ({ navigation }) => {
                                     <Text testID="steps-count" style={styles.statText}>Steps Count: {stepsCount}</Text>
                                     <Text testID="distance" style={styles.statText}>Distance: {distance.toFixed(2)} km</Text>
                                     <Text testID="calories" style={styles.statText}>Calories Burned: {caloriesBurned.toFixed(2)} cal</Text>
+                                    <Text testID="streak" style={styles.statText}>Streak: 0 days</Text>
                                 </View>
 
                                 {loading && <Text style={styles.statText}>Loading posts...</Text>}
