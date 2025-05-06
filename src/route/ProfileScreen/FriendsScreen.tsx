@@ -9,15 +9,39 @@ const FriendsScreen = ({ route, navigation }: any) => {
   const [friends, setFriends] = useState<any[]>([]);
   const [friendRequests, setFriendRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
 
   useEffect(() => {
+
     fetchFriends();
   }, []);
 
   const fetchFriends = async () => {
     setLoading(true);
-    console.log(`Fetching friends for user: ${username}`);
+    try {
+    // Get the authenticated user
+    const { data: { user }, error: usernameError } = await supabase.auth.getUser();
 
+    if (usernameError || !user) {
+        console.log('Error fetching authenticated user:', usernameError);
+        return;
+    }
+
+
+    // Fetch username from USER table using email
+    const { data: userData, error: userDataError } = await supabase
+        .from('USER')
+        .select('username')
+        .eq('email', user.email)
+        .single();
+
+    if (userDataError || !userData) {
+        console.log('Error fetching user data:', userDataError);
+        return;
+    }
+
+    const userUsername = userData.username;
+    setIsOwnProfile(username === userUsername);
     // Step 1: Fetch accepted friendships where this user is user1
     const { data: sent, error: sentError } = await supabase
       .from('FRIEND')
@@ -88,6 +112,9 @@ const FriendsScreen = ({ route, navigation }: any) => {
 
     setFriends(users || []);
     setLoading(false);
+    } catch (error) {
+        console.error('Error in fetchFriends:', error);
+    }
   };
   const acceptRequest = async (requesterUsername: string) => {
     const { error } = await supabase
@@ -161,6 +188,8 @@ const FriendsScreen = ({ route, navigation }: any) => {
 
   return (
     <View style={styles.profileContainer}>
+    {isOwnProfile ? (
+        <>
       <Text style={styles.title}>Friend Requests</Text>
             {friendRequests.length === 0 ? (
               <Text style={{ textAlign: 'center' }}>No friends requests.</Text>
@@ -172,6 +201,8 @@ const FriendsScreen = ({ route, navigation }: any) => {
                 style={{paddingHorizontal: 20, marginBottom: -300, padding: 0}}
               />
             )}
+        </>
+    ) : null}
       <Text style={styles.title}>Friends</Text>
       {friends.length === 0 ? (
         <Text style={{ textAlign: 'center' }}>No accepted friends yet.</Text>

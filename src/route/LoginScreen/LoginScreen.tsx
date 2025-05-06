@@ -4,6 +4,7 @@ import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../../services/supabase';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
@@ -143,18 +144,33 @@ const LoginScreen = ({ navigation }: any) => {
           {loading ? 'Logging in...' : 'Log in'}
         </Text>
       </TouchableOpacity>
-      <View style={styles.rememberUserContainer}>
-
-          <CheckBox
-              value={rememberUser}
-              onValueChange={setRememberUser}
-              style={styles.checkbox}
-              onCheckColor="#feb83d"  // Checkmark color (iOS)
-              onTintColor="#feb83d"   // Checkbox background when checked (iOS)
-              tintColor="#888888"
-          />
-          <Text style={styles.rememberUserText}>Remember me</Text>
-      </View>
+      <TouchableOpacity
+        onPress={() => setRememberUser(!rememberUser)}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 10,
+        }}
+      >
+        <View
+          style={{
+            height: 20,
+            width: 20,
+            borderRadius: 4,
+            borderWidth: 2,
+            borderColor: '#888',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 8,
+            backgroundColor: rememberUser ? '#feb83d' : 'transparent',
+          }}
+        >
+          {rememberUser && (
+            <Icon name="check" size={14} color="white" />
+          )}
+        </View>
+        <Text style={styles.rememberUserText}>Remember me</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={handleResetPassword}>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
